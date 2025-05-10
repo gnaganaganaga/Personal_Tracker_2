@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+</head>
+<body>
+  <h2>Dashboard</h2>
+
+  <form id="updateForm">
+    <textarea name="details" placeholder="Enter personal details..."></textarea>
+    <button>Update</button>
+  </form>
+
+  <button onclick="getSummary()">View Summary</button>
+  <pre id="summary"></pre>
+
+  <a href="/logout">Logout</a>
+
+  <script>
+    document.getElementById('updateForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const details = e.target.details.value;
+      const res = await fetch('/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ details })
+      });
+      alert(await res.text());
+    });
+
+    async function getSummary() {
+      const res = await fetch('/summary');
+      const data = await res.json();
+      document.getElementById('summary').textContent = JSON.stringify(data, null, 2);
+    }
+  </script>
+</body>
+</html>
